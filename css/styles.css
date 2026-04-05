@@ -93,7 +93,7 @@ textarea{resize:vertical;min-height:80px}
 .player-label{font-size:.75rem;color:var(--gold);font-family:'Playfair Display',serif;margin-bottom:.2rem}
 .player-status{font-size:.68rem;color:rgba(255,255,255,.5);min-height:.85rem}
 .player-controls{display:flex;align-items:center;gap:.6rem}
-.play-btn{width:64px;height:64px;background:linear-gradient(135deg,var(--saffron),var(--saffron-light));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;color:#fff;box-shadow:0 3px 10px rgba(242,140,40,.35);transition:opacity var(--transition);-webkit-tap-highlight-color:transparent}
+.play-btn{width:80px;height:80px;background:linear-gradient(135deg,var(--saffron),var(--saffron-light));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0;color:#fff;box-shadow:0 3px 10px rgba(242,140,40,.35);transition:opacity var(--transition);-webkit-tap-highlight-color:transparent}
 .play-btn:disabled{opacity:.3}
 .progress-wrap{flex:1;height:4px;background:rgba(255,255,255,.15);border-radius:3px;position:relative;overflow:hidden}
 .buffer-bar,.progress-bar{position:absolute;top:0;left:0;height:100%;border-radius:3px;transition:width .1s linear}
