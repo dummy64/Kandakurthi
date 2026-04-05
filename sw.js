@@ -1,4 +1,4 @@
-const CACHE = 'museum-v8';
+const CACHE = 'museum-v9';
 const SHELL = ['./', './index.html', './css/styles.css', './js/api.js', './js/audio.js', './js/ui.js', './js/app.js'];
 
 self.addEventListener('install', e => {
@@ -13,8 +13,18 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   const { request } = e;
-  // Only handle http/https, skip chrome-extension, google APIs, etc.
-  if (!request.url.startsWith('http') || request.url.includes('google.com') || request.url.includes('googleapis.com') || request.method !== 'GET') return;
+  const url = request.url;
+
+  // Skip: non-GET, non-http, google APIs, chrome extensions, and ALL media files
+  if (request.method !== 'GET' ||
+      !url.startsWith('http') ||
+      url.includes('google.com') ||
+      url.includes('googleapis.com') ||
+      url.includes('chrome-extension') ||
+      /\.(mp3|mp4|mpeg|ogg|wav|aac|webm|m4a)(\?|$)/i.test(url) ||
+      request.headers.get('range')) {
+    return;
+  }
 
   e.respondWith(
     caches.match(request).then(cached => {
