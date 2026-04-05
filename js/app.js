@@ -65,7 +65,6 @@ const App = (() => {
 
     $('form-feedback').addEventListener('submit', async e => {
       e.preventDefault();
-      const comment = $('fb-comment').value.trim();
       const status = $('fb-status');
 
       if (!feedbackRating) {
@@ -78,7 +77,7 @@ const App = (() => {
       $('btn-feedback').disabled = true;
       $('btn-feedback').textContent = 'Submitting…';
       try {
-        await API.submitFeedback(feedbackRating, comment);
+        await API.submitFeedback(feedbackRating, '');
         status.textContent = '🙏 Thank you for your feedback!';
         status.className = 'fb-status success';
         $('form-feedback').reset();
