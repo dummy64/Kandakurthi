@@ -1,6 +1,6 @@
 const API = (() => {
   const SHEET_ID = '1yAt8FuRAKYtW22L5BBVpjbBJdxPA5xbkonBaGkAVOOI';
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzR1C4Gx3AZvTVWBGUbtSF6UTby5KUGXrmeSSXzEHntfb279ynnCmRHBlINHRYVy2tQ4g/exec';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyAgZl78OEQqlXrtq4av9GC48LlHnPrqRZvY-7grkD2nldFypj491qvABiq1X_nUgoi3g/exec';
   const LANGUAGES = ['en', 'te', 'hi', 'mr'];
   const FALLBACK_LANG = 'en';
 
@@ -18,12 +18,8 @@ const API = (() => {
 
   async function fetchLang(lang) {
     if (_cache[lang]) return _cache[lang];
-
     const cached = sessionStorage.getItem('museum_items_' + lang);
-    if (cached) {
-      _cache[lang] = JSON.parse(cached);
-      return _cache[lang];
-    }
+    if (cached) { _cache[lang] = JSON.parse(cached); return _cache[lang]; }
 
     const url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=items_' + lang;
     const res = await fetch(url);
@@ -45,11 +41,7 @@ const API = (() => {
     return _cache[FALLBACK_LANG]?.find(i => String(i.id) === String(id)) || null;
   }
 
-  // Return all items for current language (for dynamic grid)
-  function getAllItems(lang) {
-    return _cache[lang] || _cache[FALLBACK_LANG] || [];
-  }
-
+  function getAllItems(lang) { return _cache[lang] || _cache[FALLBACK_LANG] || []; }
   function getAllIds() {
     const ids = new Set();
     Object.values(_cache).forEach(items => items.forEach(i => ids.add(String(i.id))));
@@ -58,9 +50,16 @@ const API = (() => {
 
   async function registerUser(name, phone, language) {
     await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: JSON.stringify({ name, phone, language, timestamp: new Date().toISOString() })
+      method: 'POST', mode: 'no-cors',
+      body: JSON.stringify({ action: 'register', name, phone, language, timestamp: new Date().toISOString() })
+    });
+  }
+
+  async function submitFeedback(rating, comment) {
+    const name = localStorage.getItem('museum_user_name') || 'Anonymous';
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST', mode: 'no-cors',
+      body: JSON.stringify({ action: 'feedback', name, rating, comment, timestamp: new Date().toISOString() })
     });
   }
 
@@ -69,5 +68,5 @@ const API = (() => {
     LANGUAGES.forEach(l => sessionStorage.removeItem('museum_items_' + l));
   }
 
-  return { LANGUAGES, FALLBACK_LANG, fetchItems, fetchLang, getItem, getAllItems, getAllIds, registerUser, clearCache };
+  return { LANGUAGES, FALLBACK_LANG, fetchItems, fetchLang, getItem, getAllItems, getAllIds, registerUser, submitFeedback, clearCache };
 })();

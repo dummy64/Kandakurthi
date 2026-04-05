@@ -6,11 +6,27 @@ const UI = (() => {
     entries.forEach(e => {
       if (e.isIntersecting) {
         e.target.src = e.target.dataset.src;
-        e.target.classList.add('loaded');
         imgObserver.unobserve(e.target);
       }
     });
   }, { rootMargin: '200px' });
+
+  // Visit tracking
+  function getVisited() {
+    try { return JSON.parse(localStorage.getItem('museum_visited') || '[]'); } catch { return []; }
+  }
+  function markVisited(id) {
+    const v = getVisited();
+    if (!v.includes(String(id))) { v.push(String(id)); localStorage.setItem('museum_visited', JSON.stringify(v)); }
+  }
+  function updateVisitProgress() {
+    const visited = getVisited();
+    const total = API.getAllItems(lang).length;
+    const count = Math.min(visited.length, total);
+    $('visited-count').textContent = count;
+    $('total-count').textContent = total;
+    $('visit-bar-fill').style.width = total ? (count / total * 100) + '%' : '0%';
+  }
 
   function getLang() { return lang; }
 
@@ -31,18 +47,17 @@ const UI = (() => {
   function showSkeleton(id) { $(id).classList.remove('hidden'); }
   function hideSkeleton(id) { $(id).classList.add('hidden'); }
 
-  // Dynamic grid — only items that exist in the sheet
   function renderGrid() {
     const grid = $('item-grid');
     grid.innerHTML = '';
     const items = API.getAllItems(lang);
+    const visited = getVisited();
 
     items.forEach(item => {
       const card = document.createElement('div');
-      card.className = 'grid-item';
+      card.className = 'grid-item' + (visited.includes(String(item.id)) ? ' visited' : '');
       card.dataset.id = item.id;
 
-      // Thumbnail
       const firstImg = String(item.images || item.thumbnail || '').split(',')[0].trim();
       if (firstImg) {
         const img = document.createElement('img');
@@ -59,32 +74,27 @@ const UI = (() => {
         card.appendChild(ph);
       }
 
-      // Info
       const info = document.createElement('div');
       info.className = 'grid-info';
-      info.innerHTML = '<div class="grid-number">#' + item.id + '</div>' +
-        '<div class="grid-name">' + (item.title || 'Exhibit ' + item.id) + '</div>';
+      info.innerHTML = '<div class="grid-number">#' + item.id + '</div><div class="grid-name">' + (item.title || 'Exhibit ' + item.id) + '</div>';
       card.appendChild(info);
-
       grid.appendChild(card);
     });
 
-    // Event delegation
     grid.onclick = e => {
       const card = e.target.closest('.grid-item');
       if (card) App.showDetail(card.dataset.id);
     };
+
+    updateVisitProgress();
   }
 
   function filterGrid(query) {
     const q = query.toLowerCase().trim();
-    const cards = $('item-grid').children;
-    for (const card of cards) {
+    for (const card of $('item-grid').children) {
       const id = card.dataset.id;
       const item = API.getItem(id, lang);
-      const match = !q || String(id).includes(q) ||
-        (item && item.title && item.title.toLowerCase().includes(q));
-      card.style.display = match ? '' : 'none';
+      card.style.display = (!q || String(id).includes(q) || (item?.title?.toLowerCase().includes(q))) ? '' : 'none';
     }
   }
 
@@ -93,7 +103,6 @@ const UI = (() => {
     $('detail-title').textContent = item.title || 'Untitled';
     $('detail-desc').textContent = item.desc || '';
 
-    // Images
     const carousel = $('detail-images');
     carousel.innerHTML = '';
     String(item.images || '').split(',').map(s => s.trim()).filter(Boolean).forEach(url => {
@@ -105,34 +114,30 @@ const UI = (() => {
       carousel.appendChild(img);
     });
 
-    // Video
     const vw = $('detail-video');
     if (item.video) {
       vw.classList.remove('hidden');
       vw.innerHTML = '<video src="' + item.video + '" controls preload="none" playsinline></video>';
-    } else {
-      vw.classList.add('hidden');
-      vw.innerHTML = '';
-    }
+    } else { vw.classList.add('hidden'); vw.innerHTML = ''; }
 
-    // Audio
     AudioPlayer.load(item.audio || '');
     if (item.audio) AudioPlayer.tryResume(item.audio);
+
+    // Mark as visited
+    markVisited(item.id);
   }
 
   async function toggleLang() {
     const langs = API.LANGUAGES;
     const idx = (langs.indexOf(lang) + 1) % langs.length;
     await setLang(langs[idx]);
-    // Re-render if on detail page
     const dp = $('page-detail');
     if (dp.classList.contains('active') && dp.dataset.currentId) {
       const item = API.getItem(dp.dataset.currentId, lang);
       if (item) renderDetail(item);
     }
-    // Re-render grid if on explorer
     if ($('page-explorer').classList.contains('active')) renderGrid();
   }
 
-  return { getLang, setLang, updateLangButtons, renderGrid, filterGrid, renderDetail, toggleLang, showSkeleton, hideSkeleton };
+  return { getLang, setLang, updateLangButtons, renderGrid, filterGrid, renderDetail, toggleLang, showSkeleton, hideSkeleton, updateVisitProgress, markVisited };
 })();
