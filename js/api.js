@@ -1,6 +1,6 @@
 const API = (() => {
   const SHEET_ID = '1yAt8FuRAKYtW22L5BBVpjbBJdxPA5xbkonBaGkAVOOI';
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyQC28l9e8QVbphSVxdtlKVyNDVpGmHU66v8ONAKnMJLrvBSlrIsWecCU7lio7ysEp9XA/exec';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzR1C4Gx3AZvTVWBGUbtSF6UTby5KUGXrmeSSXzEHntfb279ynnCmRHBlINHRYVy2tQ4g/exec';
   const LANGUAGES = ['en', 'hi', 'te', 'mr'];
   const FALLBACK_LANG = 'en';
 
