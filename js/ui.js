@@ -76,7 +76,11 @@ const UI = (() => {
 
       const info = document.createElement('div');
       info.className = 'grid-info';
-      info.innerHTML = '<div class="grid-number">#' + item.id + '</div><div class="grid-name">' + (item.title || 'Exhibit ' + item.id) + '</div>';
+      const desc = item.desc ? String(item.desc).substring(0, 80) + (item.desc.length > 80 ? '…' : '') : '';
+      info.innerHTML = '<div class="grid-number">#' + item.id + '</div>' +
+        '<div class="grid-name">' + (item.title || 'Exhibit ' + item.id) + '</div>' +
+        (desc ? '<div class="grid-desc">' + desc + '</div>' : '') +
+        '<div class="grid-readmore">Read more →</div>';
       card.appendChild(info);
       grid.appendChild(card);
     });
