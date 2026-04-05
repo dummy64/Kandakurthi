@@ -1,9 +1,20 @@
 const API = (() => {
+  const SHEET_ID = '1yAt8FuRAKYtW22L5BBVpjbBJdxPA5xbkonBaGkAVOOI';
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyQC28l9e8QVbphSVxdtlKVyNDVpGmHU66v8ONAKnMJLrvBSlrIsWecCU7lio7ysEp9XA/exec';
   const LANGUAGES = ['en', 'hi', 'te', 'mr'];
   const FALLBACK_LANG = 'en';
 
   let _cache = {};
+
+  function parseGviz(text) {
+    const json = JSON.parse(text.match(/\{[\s\S]*\}/)[0]);
+    const cols = json.table.cols.map(c => c.label.toLowerCase().trim());
+    return json.table.rows.map(r => {
+      const obj = {};
+      cols.forEach((col, i) => { obj[col] = r.c[i]?.v ?? ''; });
+      return obj;
+    });
+  }
 
   async function fetchLang(lang) {
     if (_cache[lang]) return _cache[lang];
@@ -14,25 +25,13 @@ const API = (() => {
       return _cache[lang];
     }
 
-    // Use script injection (JSONP-style) to avoid CORS entirely
-    const data = await loadViaScript(APPS_SCRIPT_URL + '?action=getItems&lang=' + lang + '&callback=__museumCb');
-    _cache[lang] = data;
-    sessionStorage.setItem('museum_items_' + lang, JSON.stringify(data));
+    const url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=items_' + lang;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Failed to fetch ' + lang);
+    const text = await res.text();
+    _cache[lang] = parseGviz(text);
+    sessionStorage.setItem('museum_items_' + lang, JSON.stringify(_cache[lang]));
     return _cache[lang];
-  }
-
-  function loadViaScript(url) {
-    return new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      window.__museumCb = function(data) {
-        resolve(data);
-        delete window.__museumCb;
-        script.remove();
-      };
-      script.src = url;
-      script.onerror = () => { script.remove(); reject(new Error('Failed to load')); };
-      document.head.appendChild(script);
-    });
   }
 
   async function fetchItems(lang) {
@@ -54,7 +53,6 @@ const API = (() => {
   }
 
   async function registerUser(name, phone, language) {
-    // no-cors POST — we don't need to read the response
     await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
       mode: 'no-cors',
