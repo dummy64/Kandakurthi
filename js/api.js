@@ -1,7 +1,7 @@
 const API = (() => {
   const SHEET_ID = '1yAt8FuRAKYtW22L5BBVpjbBJdxPA5xbkonBaGkAVOOI';
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyAgZl78OEQqlXrtq4av9GC48LlHnPrqRZvY-7grkD2nldFypj491qvABiq1X_nUgoi3g/exec';
-  const LANGUAGES = ['en', 'te', 'hi', 'mr'];
+  const LANGUAGES = ['en', 'te', 'hi'];
   const FALLBACK_LANG = 'en';
 
   let _cache = {};
