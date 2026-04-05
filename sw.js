@@ -1,4 +1,4 @@
-const CACHE = 'museum-v25';
+const CACHE = 'museum-v26';
 const SHELL = ['./', './index.html', './css/styles.css', './js/api.js', './js/audio.js', './js/ui.js', './js/app.js'];
 
 self.addEventListener('install', e => {
