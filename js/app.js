@@ -100,6 +100,7 @@ const App = (() => {
       btn.addEventListener('click', () => {
         const page = btn.dataset.page;
         navigate(page);
+        if (page === 'explorer') UI.updateVisitProgress();
         // Update active state across all bottom navs
         document.querySelectorAll('.bnav-item').forEach(b => {
           b.classList.toggle('active', b.dataset.page === page);
@@ -109,6 +110,7 @@ const App = (() => {
     document.querySelectorAll('.btn-nav-back').forEach(btn => {
       btn.addEventListener('click', () => {
         navigate('explorer');
+        UI.updateVisitProgress();
         document.querySelectorAll('.bnav-item').forEach(b => {
           b.classList.toggle('active', b.dataset.page === 'explorer');
         });
@@ -170,7 +172,7 @@ const App = (() => {
     });
 
     $('inp-search').addEventListener('input', e => UI.filterGrid(e.target.value));
-    $('btn-back').addEventListener('click', () => { history.pushState(null, '', location.pathname); navigate('explorer'); });
+    $('btn-back').addEventListener('click', () => { history.pushState(null, '', location.pathname); navigate('explorer'); UI.updateVisitProgress(); });
     $('btn-lang-toggle').addEventListener('change', e => { UI.toggleLang(e.target.value); showWelcome(); updateExhibitCount(); });
     $('btn-lang-toggle-detail').addEventListener('change', e => UI.toggleLang(e.target.value));
     $('btn-retry').addEventListener('click', loadExplorer);
@@ -189,7 +191,7 @@ const App = (() => {
     }
 
     window.addEventListener('popstate', () => {
-      if (pages.detail.classList.contains('active')) navigate('explorer');
+      if (pages.detail.classList.contains('active')) { navigate('explorer'); UI.updateVisitProgress(); }
     });
 
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});

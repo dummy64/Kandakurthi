@@ -23,13 +23,15 @@ const UI = (() => {
     const visited = getVisited();
     const total = API.getAllItems(lang).length;
     const count = Math.min(visited.length, total);
-    $('visited-count').textContent = count;
-    $('total-count').textContent = total;
     const progressText = $('visit-progress').querySelector('.progress-text');
     if (progressText) {
       progressText.innerHTML = '<span id="visited-count">' + count + '</span> ' + I18n.t('ofExplored', lang) + ' <span id="total-count">' + total + '</span> ' + I18n.t('explored', lang);
     }
     $('visit-bar-fill').style.width = total ? (count / total * 100) + '%' : '0%';
+    // Update visited card styles
+    for (const card of $('item-grid').children) {
+      card.classList.toggle('visited', visited.includes(card.dataset.id));
+    }
   }
 
   function getLang() { return lang; }
