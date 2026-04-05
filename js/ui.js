@@ -25,6 +25,10 @@ const UI = (() => {
     const count = Math.min(visited.length, total);
     $('visited-count').textContent = count;
     $('total-count').textContent = total;
+    const progressText = $('visit-progress').querySelector('.progress-text');
+    if (progressText) {
+      progressText.innerHTML = '<span id="visited-count">' + count + '</span> ' + I18n.t('ofExplored', lang) + ' <span id="total-count">' + total + '</span> ' + I18n.t('explored', lang);
+    }
     $('visit-bar-fill').style.width = total ? (count / total * 100) + '%' : '0%';
   }
 
@@ -34,6 +38,7 @@ const UI = (() => {
     lang = l;
     localStorage.setItem('museum_lang', l);
     updateLangButtons();
+    I18n.applyAll(l);
     await API.fetchItems(l);
   }
 
@@ -80,7 +85,7 @@ const UI = (() => {
       info.innerHTML = '<div class="grid-number">#' + item.id + '</div>' +
         '<div class="grid-name">' + (item.title || 'Exhibit ' + item.id) + '</div>' +
         (desc ? '<div class="grid-desc">' + desc + '</div>' : '') +
-        '<div class="grid-readmore">Read more →</div>';
+        '<div class="grid-readmore">' + I18n.t('readMore', lang) + '</div>';
       card.appendChild(info);
       grid.appendChild(card);
     });

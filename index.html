@@ -9,29 +9,29 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Telugu:wght@500;700&family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600&family=Noto+Serif+Telugu:wght@500;700&family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
   <!-- Offline Banner -->
-  <div id="offline-banner" class="offline-banner hidden">📡 You're offline — cached content available</div>
+  <div id="offline-banner" class="offline-banner hidden" data-i18n="offlineBanner">📡 You're offline — cached content available</div>
 
   <!-- Landing / Welcome Portal -->
   <section id="page-landing" class="page active">
     <div class="landing-inner">
       <img src="assets/logo.png" alt="Sri Keshava Spoorthi Mandir" class="mandir-logo">
-      <h1 class="mandir-title">Sri Keshava Spoorthi Mandir</h1>
-      <p class="mandir-location">Kandakurthi, Renjal Mandal, Nizamabad</p>
-      <p class="mandir-tagline">Commemorating the Centenary of Rashtriya Swayamsevak Sangh</p>
+      <h1 class="mandir-title" data-i18n="mandirTitle">Sri Keshava Spoorthi Mandir</h1>
+      <p class="mandir-location" data-i18n="mandirLocation">Kandakurthi, Renjal Mandal, Nizamabad</p>
+      <p class="mandir-tagline" data-i18n="mandirTagline">Commemorating the Centenary of Rashtriya Swayamsevak Sangh</p>
       <form id="form-register" autocomplete="off">
-        <input type="text" id="inp-name" placeholder="Your Name" required>
-        <input type="tel" id="inp-phone" placeholder="Phone Number" required pattern="[0-9]{10,15}">
+        <input type="text" id="inp-name" data-i18n="inputName" placeholder="Your Name" required>
+        <input type="tel" id="inp-phone" data-i18n="inputPhone" placeholder="Phone Number" required pattern="[0-9]{10,15}">
         <select id="sel-lang"></select>
-        <button type="submit" id="btn-start">Enter the Mandir</button>
+        <button type="submit" id="btn-start" data-i18n="btnStart">Enter the Mandir</button>
         <p id="reg-error" class="error hidden"></p>
       </form>
       <div class="visitor-note">
-        <p>🌿 This is a plastic-free zone. Please bring your own water bottle.</p>
+        <p data-i18n="visitorNote">🌿 This is a plastic-free zone. Please bring your own water bottle.</p>
       </div>
     </div>
   </section>
@@ -41,7 +41,7 @@
     <header class="topbar">
       <div>
         <p id="welcome-msg" class="welcome-msg"></p>
-        <h2 class="explorer-title">Heritage of Kandakurthi</h2>
+        <h2 class="explorer-title" data-i18n="explorerTitle">Heritage of Kandakurthi</h2>
         <p class="explorer-sub" id="exhibit-count"></p>
       </div>
       <button id="btn-lang-toggle" class="lang-btn" aria-label="Switch language">EN</button>
@@ -54,28 +54,28 @@
     </div>
 
     <div class="search-wrap">
-      <input type="search" id="inp-search" placeholder="🔍 Search by number or name…">
+      <input type="search" id="inp-search" data-i18n="searchPlaceholder" placeholder="🔍 Search by number or name…">
     </div>
     <div id="item-grid" class="grid"></div>
     <div id="grid-skeleton" class="grid skeleton-grid hidden"></div>
     <div id="grid-error" class="error-block hidden">
-      <p>Unable to load exhibits</p>
-      <button id="btn-retry">Retry</button>
+      <p data-i18n="unableToLoad">Unable to load exhibits</p>
+      <button id="btn-retry" data-i18n="btnRetry">Retry</button>
     </div>
 
     <!-- Bottom Nav -->
     <nav class="bottom-nav">
-      <button class="bnav-item active" data-page="explorer">🏛 Exhibits</button>
-      <button class="bnav-item" data-page="about">📜 About</button>
-      <button class="bnav-item" data-page="map">🗺 Map</button>
-      <button class="bnav-item" data-page="feedback">💬 Feedback</button>
+      <button class="bnav-item active" data-page="explorer" data-i18n="navExhibits">🏛 Exhibits</button>
+      <button class="bnav-item" data-page="about" data-i18n="navAbout">📜 About</button>
+      <button class="bnav-item" data-page="map" data-i18n="navMap">🗺 Map</button>
+      <button class="bnav-item" data-page="feedback" data-i18n="navFeedback">💬 Feedback</button>
     </nav>
   </section>
 
   <!-- Exhibit Detail -->
   <section id="page-detail" class="page">
     <header class="topbar">
-      <button id="btn-back" aria-label="Go back">← Back</button>
+      <button id="btn-back" aria-label="Go back" data-i18n="btnBack">← Back</button>
       <div class="detail-nav">
         <button id="btn-prev" class="nav-btn" aria-label="Previous">‹</button>
         <button id="btn-next" class="nav-btn" aria-label="Next">›</button>
@@ -95,7 +95,7 @@
 
     <!-- Audio Player -->
     <div id="audio-player" class="player">
-      <div class="player-label">🎧 Listen to History</div>
+      <div class="player-label" data-i18n="listenToHistory">🎧 Listen to History</div>
       <div class="player-status" id="player-status"></div>
       <div class="player-controls">
         <button id="btn-play" class="play-btn" aria-label="Play" disabled>
@@ -117,78 +117,78 @@
   <!-- About the Mandir -->
   <section id="page-about" class="page">
     <header class="topbar">
-      <button class="btn-nav-back" aria-label="Go back">← Back</button>
-      <h2 class="explorer-title">About the Mandir</h2>
+      <button class="btn-nav-back" aria-label="Go back" data-i18n="btnBack">← Back</button>
+      <h2 class="explorer-title" data-i18n="aboutTitle">About the Mandir</h2>
       <span></span>
     </header>
     <div class="about-content">
       <div class="about-card">
-        <h3>🏛 Sri Keshava Spoorthi Mandir</h3>
-        <p>Located in the historic village of Kandakurthi, Renjal Mandal, Nizamabad district, the Sri Keshava Spoorthi Mandir stands as a beacon of cultural heritage and national pride.</p>
+        <h3 data-i18n="aboutCard1Title">🏛 Sri Keshava Spoorthi Mandir</h3>
+        <p data-i18n="aboutCard1Desc">Located in the historic village of Kandakurthi, Renjal Mandal, Nizamabad district, the Sri Keshava Spoorthi Mandir stands as a beacon of cultural heritage and national pride.</p>
       </div>
       <div class="about-card">
-        <h3>📜 The Legacy</h3>
-        <p>The modernized building was inaugurated on the occasion of the Centenary of the Rashtriya Swayamsevak Sangh, commemorating 100 years of service to the nation. The structure blends traditional Indian temple architecture with modern functional design.</p>
+        <h3 data-i18n="aboutCard2Title">📜 The Legacy</h3>
+        <p data-i18n="aboutCard2Desc">The modernized building was inaugurated on the occasion of the Centenary of the Rashtriya Swayamsevak Sangh, commemorating 100 years of service to the nation. The structure blends traditional Indian temple architecture with modern functional design.</p>
       </div>
       <div class="about-card">
-        <h3>🙏 Dr. Keshav Baliram Hedgewar</h3>
-        <p>Born in Nagpur in 1889, Dr. Hedgewar dedicated his life to the service of the nation. He founded the Rashtriya Swayamsevak Sangh in 1925 in Nagpur. His ancestral roots trace back to Kandakurthi, making this village a place of deep historical significance.</p>
+        <h3 data-i18n="aboutCard3Title">🙏 Dr. Keshav Baliram Hedgewar</h3>
+        <p data-i18n="aboutCard3Desc">Born in Nagpur in 1889, Dr. Hedgewar dedicated his life to the service of the nation. He founded the Rashtriya Swayamsevak Sangh in 1925 in Nagpur. His ancestral roots trace back to Kandakurthi, making this village a place of deep historical significance.</p>
       </div>
       <div class="about-card">
-        <h3>🎯 The Centenary Celebration</h3>
-        <p>The inauguration was graced by Dr. Mohan Rao Bhagwat, Sarsanghchalak. The Mandir now serves as a museum and heritage center, preserving the history and inspiring future generations.</p>
+        <h3 data-i18n="aboutCard4Title">🎯 The Centenary Celebration</h3>
+        <p data-i18n="aboutCard4Desc">The inauguration was graced by Dr. Mohan Rao Bhagwat, Sarsanghchalak. The Mandir now serves as a museum and heritage center, preserving the history and inspiring future generations.</p>
       </div>
       <div class="about-card">
-        <h3>📋 Visitor Guidelines</h3>
+        <h3 data-i18n="aboutCard5Title">📋 Visitor Guidelines</h3>
         <ul>
-          <li>🌿 This is a plastic-free zone</li>
-          <li>🚰 Please bring your own water bottle</li>
-          <li>🔒 Security checks 30 minutes prior to entry</li>
-          <li>👩 Dedicated facilities available for women</li>
-          <li>📱 Use this audio guide for the best experience</li>
+          <li data-i18n="aboutGuide1">🌿 This is a plastic-free zone</li>
+          <li data-i18n="aboutGuide2">🚰 Please bring your own water bottle</li>
+          <li data-i18n="aboutGuide3">🔒 Security checks 30 minutes prior to entry</li>
+          <li data-i18n="aboutGuide4">👩 Dedicated facilities available for women</li>
+          <li data-i18n="aboutGuide5">📱 Use this audio guide for the best experience</li>
         </ul>
       </div>
     </div>
     <nav class="bottom-nav">
-      <button class="bnav-item" data-page="explorer">🏛 Exhibits</button>
-      <button class="bnav-item active" data-page="about">📜 About</button>
-      <button class="bnav-item" data-page="map">🗺 Map</button>
-      <button class="bnav-item" data-page="feedback">💬 Feedback</button>
+      <button class="bnav-item" data-page="explorer" data-i18n="navExhibits">🏛 Exhibits</button>
+      <button class="bnav-item active" data-page="about" data-i18n="navAbout">📜 About</button>
+      <button class="bnav-item" data-page="map" data-i18n="navMap">🗺 Map</button>
+      <button class="bnav-item" data-page="feedback" data-i18n="navFeedback">💬 Feedback</button>
     </nav>
   </section>
 
   <!-- Map / Floor Plan -->
   <section id="page-map" class="page">
     <header class="topbar">
-      <button class="btn-nav-back" aria-label="Go back">← Back</button>
-      <h2 class="explorer-title">Floor Plan</h2>
+      <button class="btn-nav-back" aria-label="Go back" data-i18n="btnBack">← Back</button>
+      <h2 class="explorer-title" data-i18n="mapTitle">Floor Plan</h2>
       <span></span>
     </header>
     <div class="map-content">
       <div class="map-placeholder" id="map-container">
         <img id="map-image" src="assets/floorplan.png" alt="Mandir Floor Plan" onerror="this.parentElement.innerHTML='<div class=\'map-empty\'>🗺<br>Floor plan coming soon.<br><small>Place floorplan.png in assets/ folder</small></div>'">
       </div>
-      <p class="map-hint">Pinch to zoom • Drag to pan</p>
+      <p class="map-hint" data-i18n="mapHint">Pinch to zoom • Drag to pan</p>
     </div>
     <nav class="bottom-nav">
-      <button class="bnav-item" data-page="explorer">🏛 Exhibits</button>
-      <button class="bnav-item" data-page="about">📜 About</button>
-      <button class="bnav-item active" data-page="map">🗺 Map</button>
-      <button class="bnav-item" data-page="feedback">💬 Feedback</button>
+      <button class="bnav-item" data-page="explorer" data-i18n="navExhibits">🏛 Exhibits</button>
+      <button class="bnav-item" data-page="about" data-i18n="navAbout">📜 About</button>
+      <button class="bnav-item active" data-page="map" data-i18n="navMap">🗺 Map</button>
+      <button class="bnav-item" data-page="feedback" data-i18n="navFeedback">💬 Feedback</button>
     </nav>
   </section>
 
   <!-- Feedback -->
   <section id="page-feedback" class="page">
     <header class="topbar">
-      <button class="btn-nav-back" aria-label="Go back">← Back</button>
-      <h2 class="explorer-title">Feedback</h2>
+      <button class="btn-nav-back" aria-label="Go back" data-i18n="btnBack">← Back</button>
+      <h2 class="explorer-title" data-i18n="feedbackTitle">Feedback</h2>
       <span></span>
     </header>
     <div class="feedback-content">
-      <p class="feedback-intro">We'd love to hear about your experience at the Mandir.</p>
+      <p class="feedback-intro" data-i18n="feedbackIntro">We'd love to hear about your experience at the Mandir.</p>
       <form id="form-feedback" autocomplete="off">
-        <label class="fb-label">How was your visit?</label>
+        <label class="fb-label" data-i18n="feedbackLabel">How was your visit?</label>
         <div class="rating-row" id="rating-row">
           <button type="button" class="rating-btn" data-val="1">😞</button>
           <button type="button" class="rating-btn" data-val="2">😐</button>
@@ -196,18 +196,19 @@
           <button type="button" class="rating-btn" data-val="4">😊</button>
           <button type="button" class="rating-btn" data-val="5">🤩</button>
         </div>
-        <button type="submit" id="btn-feedback" class="btn-primary">Submit Feedback</button>
+        <button type="submit" id="btn-feedback" class="btn-primary" data-i18n="btnSubmitFeedback">Submit Feedback</button>
         <p id="fb-status" class="fb-status hidden"></p>
       </form>
     </div>
     <nav class="bottom-nav">
-      <button class="bnav-item" data-page="explorer">🏛 Exhibits</button>
-      <button class="bnav-item" data-page="about">📜 About</button>
-      <button class="bnav-item" data-page="map">🗺 Map</button>
-      <button class="bnav-item active" data-page="feedback">💬 Feedback</button>
+      <button class="bnav-item" data-page="explorer" data-i18n="navExhibits">🏛 Exhibits</button>
+      <button class="bnav-item" data-page="about" data-i18n="navAbout">📜 About</button>
+      <button class="bnav-item" data-page="map" data-i18n="navMap">🗺 Map</button>
+      <button class="bnav-item active" data-page="feedback" data-i18n="navFeedback">💬 Feedback</button>
     </nav>
   </section>
 
+  <script src="js/i18n.js"></script>
   <script src="js/api.js"></script>
   <script src="js/audio.js"></script>
   <script src="js/ui.js"></script>

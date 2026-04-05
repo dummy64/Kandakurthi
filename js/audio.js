@@ -47,7 +47,7 @@ const AudioPlayer = (() => {
     showPlay();
 
     if (!url) {
-      els.status.textContent = 'Audio not available';
+      els.status.textContent = I18n.t('audioNotAvailable', UI.getLang());
       els.btn.disabled = true;
       return;
     }
@@ -59,16 +59,16 @@ const AudioPlayer = (() => {
     audio.appendChild(source);
     audio.load();
 
-    els.status.textContent = 'Tap ▶ to play';
+    els.status.textContent = I18n.t('tapToPlay', UI.getLang());
     els.btn.disabled = false;
 
     // Remove old listeners by cloning trick — skip, we use named handlers
     audio.onloadedmetadata = () => {
       els.duration.textContent = fmt(audio.duration);
-      els.status.textContent = 'Ready';
+      els.status.textContent = I18n.t('ready', UI.getLang());
     };
     audio.oncanplay = () => {
-      if (els.status.textContent === 'Loading…') els.status.textContent = 'Ready';
+      if (els.status.textContent === I18n.t('loading', UI.getLang())) els.status.textContent = I18n.t('ready', UI.getLang());
     };
     audio.ontimeupdate = () => {
       if (!audio.duration) return;
@@ -86,18 +86,18 @@ const AudioPlayer = (() => {
         els.buffer.style.width = (audio.buffered.end(audio.buffered.length - 1) / audio.duration) * 100 + '%';
       }
     };
-    audio.onwaiting = () => { els.status.textContent = 'Buffering…'; };
+    audio.onwaiting = () => { els.status.textContent = I18n.t('buffering', UI.getLang()); };
     audio.onplaying = () => { els.status.textContent = ''; showPause(); };
-    audio.onended = () => { showPlay(); els.status.textContent = 'Finished'; if (onEndedCallback) onEndedCallback(); };
-    audio.onerror = () => { els.status.textContent = 'Audio not available'; els.btn.disabled = true; };
+    audio.onended = () => { showPlay(); els.status.textContent = I18n.t('finished', UI.getLang()); if (onEndedCallback) onEndedCallback(); };
+    audio.onerror = () => { els.status.textContent = I18n.t('audioNotAvailable', UI.getLang()); els.btn.disabled = true; };
   }
 
   function toggle() {
     if (!audio || !audio.querySelector('source')) return;
     if (audio.paused) {
-      els.status.textContent = 'Loading…';
+      els.status.textContent = I18n.t('loading', UI.getLang());
       var p = audio.play();
-      if (p) p.then(() => { showPause(); }).catch(() => { els.status.textContent = 'Tap ▶ to play'; showPlay(); });
+      if (p) p.then(() => { showPause(); }).catch(() => { els.status.textContent = I18n.t('tapToPlay', UI.getLang()); showPlay(); });
     } else {
       audio.pause();
       showPlay();

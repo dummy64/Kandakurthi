@@ -21,7 +21,8 @@ const App = (() => {
   }
 
   function updateExhibitCount() {
-    $('exhibit-count').textContent = API.getAllItems(UI.getLang()).length + ' exhibits to explore';
+    const lang = UI.getLang();
+    $('exhibit-count').textContent = API.getAllItems(lang).length + I18n.t('exhibitsToExplore', lang);
   }
 
   // #1 Share
@@ -68,28 +69,28 @@ const App = (() => {
       const status = $('fb-status');
 
       if (!feedbackRating) {
-        status.textContent = 'Please select a rating';
+        status.textContent = I18n.t('fbSelectRating', UI.getLang());
         status.className = 'fb-status error';
         status.classList.remove('hidden');
         return;
       }
 
       $('btn-feedback').disabled = true;
-      $('btn-feedback').textContent = 'Submitting…';
+      $('btn-feedback').textContent = I18n.t('fbSubmitting', UI.getLang());
       try {
         await API.submitFeedback(feedbackRating, '');
-        status.textContent = '🙏 Thank you for your feedback!';
+        status.textContent = I18n.t('fbThanks', UI.getLang());
         status.className = 'fb-status success';
         $('form-feedback').reset();
         feedbackRating = 0;
         for (const b of $('rating-row').children) b.classList.remove('selected');
       } catch {
-        status.textContent = 'Failed to submit. Please try again.';
+        status.textContent = I18n.t('fbError', UI.getLang());
         status.className = 'fb-status error';
       }
       status.classList.remove('hidden');
       $('btn-feedback').disabled = false;
-      $('btn-feedback').textContent = 'Submit Feedback';
+      $('btn-feedback').textContent = I18n.t('btnSubmitFeedback', UI.getLang());
     });
   }
 
@@ -133,6 +134,14 @@ const App = (() => {
       sel.appendChild(opt);
     });
 
+    sel.value = UI.getLang();
+
+    // Live preview: translate landing page when dropdown changes
+    sel.addEventListener('change', () => I18n.applyAll(sel.value));
+
+    // Apply translations for current language
+    I18n.applyAll(UI.getLang());
+
     // Registration
     $('form-register').addEventListener('submit', async e => {
       e.preventDefault();
@@ -143,19 +152,20 @@ const App = (() => {
       errEl.classList.add('hidden');
 
       if (!/^[0-9]{10,15}$/.test(phone)) {
-        errEl.textContent = 'Enter a valid phone number (10-15 digits)';
+        errEl.textContent = I18n.t('regErrorPhone', lang);
         errEl.classList.remove('hidden');
         return;
       }
 
       $('btn-start').disabled = true;
-      $('btn-start').textContent = 'Entering…';
+      $('btn-start').textContent = I18n.t('entering', lang);
       try { await API.registerUser(name, phone, lang); } catch {}
       localStorage.setItem('museum_user_name', name);
       await UI.setLang(lang);
+      I18n.applyAll(lang);
       localStorage.setItem('museum_registered', '1');
       $('btn-start').disabled = false;
-      $('btn-start').textContent = 'Enter the Mandir';
+      $('btn-start').textContent = I18n.t('btnStart', lang);
       await loadExplorer();
     });
 
@@ -211,7 +221,7 @@ const App = (() => {
 
     if (!item) {
       $('detail-badge').textContent = 'Exhibit #' + id;
-      $('detail-title').textContent = 'Details not available';
+      $('detail-title').textContent = I18n.t('detailsNotAvailable', UI.getLang());
       $('detail-desc').textContent = '';
       $('detail-images').innerHTML = '';
       $('detail-video').classList.add('hidden');

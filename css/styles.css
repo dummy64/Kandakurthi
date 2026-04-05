@@ -148,6 +148,15 @@ textarea{resize:vertical;min-height:80px}
 
 /* === Responsive === */
 @media(min-width:400px){.grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}}
+
+/* === Telugu / Hindi font support === */
+body[data-lang="te"]{font-family:'Noto Serif Telugu','Inter',sans-serif}
+body[data-lang="te"] h1,body[data-lang="te"] h2,body[data-lang="te"] h3,
+body[data-lang="te"] .mandir-title,body[data-lang="te"] .explorer-title,body[data-lang="te"] .player-label{font-family:'Noto Serif Telugu',serif}
+body[data-lang="hi"]{font-family:'Noto Sans Devanagari','Inter',sans-serif}
+body[data-lang="hi"] h1,body[data-lang="hi"] h2,body[data-lang="hi"] h3,
+body[data-lang="hi"] .mandir-title,body[data-lang="hi"] .explorer-title,body[data-lang="hi"] .player-label{font-family:'Noto Sans Devanagari',serif}
+
 @media(min-width:768px){
   html{font-size:19px}
   .page{max-width:600px;margin:0 auto}
