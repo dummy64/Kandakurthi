@@ -151,6 +151,7 @@ textarea{resize:vertical;min-height:80px}
 /* === Responsive === */
 @media(min-width:400px){.grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}}
 @media(min-width:768px){
+  html{font-size:19px}
   .page{max-width:600px;margin:0 auto}
   .player,.bottom-nav{max-width:600px;left:50%;transform:translateX(-50%)}
   .grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
