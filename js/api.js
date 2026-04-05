@@ -1,7 +1,7 @@
 const API = (() => {
   const SHEET_ID = '1yAt8FuRAKYtW22L5BBVpjbBJdxPA5xbkonBaGkAVOOI';
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzR1C4Gx3AZvTVWBGUbtSF6UTby5KUGXrmeSSXzEHntfb279ynnCmRHBlINHRYVy2tQ4g/exec';
-  const LANGUAGES = ['en', 'hi', 'te', 'mr'];
+  const LANGUAGES = ['en', 'te', 'hi', 'mr'];
   const FALLBACK_LANG = 'en';
 
   let _cache = {};
@@ -28,8 +28,7 @@ const API = (() => {
     const url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=items_' + lang;
     const res = await fetch(url);
     if (!res.ok) throw new Error('Failed to fetch ' + lang);
-    const text = await res.text();
-    _cache[lang] = parseGviz(text);
+    _cache[lang] = parseGviz(await res.text());
     sessionStorage.setItem('museum_items_' + lang, JSON.stringify(_cache[lang]));
     return _cache[lang];
   }
@@ -44,6 +43,11 @@ const API = (() => {
     const item = _cache[lang]?.find(i => String(i.id) === String(id));
     if (item?.title) return item;
     return _cache[FALLBACK_LANG]?.find(i => String(i.id) === String(id)) || null;
+  }
+
+  // Return all items for current language (for dynamic grid)
+  function getAllItems(lang) {
+    return _cache[lang] || _cache[FALLBACK_LANG] || [];
   }
 
   function getAllIds() {
@@ -65,5 +69,5 @@ const API = (() => {
     LANGUAGES.forEach(l => sessionStorage.removeItem('museum_items_' + l));
   }
 
-  return { LANGUAGES, FALLBACK_LANG, fetchItems, fetchLang, getItem, getAllIds, registerUser, clearCache };
+  return { LANGUAGES, FALLBACK_LANG, fetchItems, fetchLang, getItem, getAllItems, getAllIds, registerUser, clearCache };
 })();

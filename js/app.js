@@ -1,4 +1,3 @@
-// ===== app.js — Router, init, deep linking, QR support =====
 const App = (() => {
   const $ = id => document.getElementById(id);
   const pages = { landing: $('page-landing'), explorer: $('page-explorer'), detail: $('page-detail') };
@@ -14,10 +13,10 @@ const App = (() => {
     AudioPlayer.init();
     UI.updateLangButtons();
 
-    // Populate language dropdown from API.LANGUAGES
+    // Populate language dropdown
     const sel = $('sel-lang');
     sel.innerHTML = '';
-    const labels = { en: 'English', hi: 'हिन्दी', te: 'తెలుగు', mr: 'मराठी' };
+    const labels = { en: 'English', te: 'తెలుగు', hi: 'हिन्दी', mr: 'मराठी' };
     API.LANGUAGES.forEach(l => {
       const opt = document.createElement('option');
       opt.value = l;
@@ -25,7 +24,7 @@ const App = (() => {
       sel.appendChild(opt);
     });
 
-    // Registration form
+    // Registration
     $('form-register').addEventListener('submit', async e => {
       e.preventDefault();
       const name = $('inp-name').value.trim();
@@ -42,25 +41,22 @@ const App = (() => {
 
       const btn = $('btn-start');
       btn.disabled = true;
-      btn.textContent = 'Registering…';
+      btn.textContent = 'Entering…';
       try { await API.registerUser(name, phone, lang); } catch {}
       await UI.setLang(lang);
       localStorage.setItem('museum_registered', '1');
       btn.disabled = false;
-      btn.textContent = 'Start Tour';
+      btn.textContent = 'Enter the Mandir';
       await loadExplorer();
     });
 
     $('inp-search').addEventListener('input', e => UI.filterGrid(e.target.value));
-    $('btn-back').addEventListener('click', () => {
-      history.pushState(null, '', location.pathname);
-      navigate('explorer');
-    });
+    $('btn-back').addEventListener('click', () => { history.pushState(null, '', location.pathname); navigate('explorer'); });
     $('btn-lang-toggle').addEventListener('click', UI.toggleLang);
     $('btn-lang-toggle-detail').addEventListener('click', UI.toggleLang);
     $('btn-retry').addEventListener('click', loadExplorer);
 
-    // Deep link / QR: ?id=12
+    // Deep link / QR
     const deepId = new URLSearchParams(location.search).get('id');
 
     if (localStorage.getItem('museum_registered')) {
@@ -107,11 +103,12 @@ const App = (() => {
     pages.detail.dataset.currentId = id;
 
     if (!item) {
-      $('detail-title').textContent = 'Item #' + id;
-      $('detail-desc').textContent = 'Details not available for this item.';
+      $('detail-badge').textContent = 'Exhibit #' + id;
+      $('detail-title').textContent = 'Details not available';
+      $('detail-desc').textContent = '';
       $('detail-images').innerHTML = '';
       $('detail-video').classList.add('hidden');
-      AudioPlayer.load(null);
+      AudioPlayer.load('');
     } else {
       UI.renderDetail(item);
     }

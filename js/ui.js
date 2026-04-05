@@ -1,4 +1,3 @@
-// ===== ui.js — UI rendering, language handling, lazy loading =====
 const UI = (() => {
   const $ = id => document.getElementById(id);
   let lang = localStorage.getItem('museum_lang') || 'en';
@@ -7,10 +6,11 @@ const UI = (() => {
     entries.forEach(e => {
       if (e.isIntersecting) {
         e.target.src = e.target.dataset.src;
+        e.target.classList.add('loaded');
         imgObserver.unobserve(e.target);
       }
     });
-  }, { rootMargin: '100px' });
+  }, { rootMargin: '200px' });
 
   function getLang() { return lang; }
 
@@ -18,51 +18,78 @@ const UI = (() => {
     lang = l;
     localStorage.setItem('museum_lang', l);
     updateLangButtons();
-    // Pre-fetch the new language data
     await API.fetchItems(l);
   }
 
   function updateLangButtons() {
     const label = lang.toUpperCase();
-    const btn1 = $('btn-lang-toggle');
-    const btn2 = $('btn-lang-toggle-detail');
-    if (btn1) btn1.textContent = label;
-    if (btn2) btn2.textContent = label;
+    const b1 = $('btn-lang-toggle'), b2 = $('btn-lang-toggle-detail');
+    if (b1) b1.textContent = label;
+    if (b2) b2.textContent = label;
   }
 
   function showSkeleton(id) { $(id).classList.remove('hidden'); }
   function hideSkeleton(id) { $(id).classList.add('hidden'); }
 
+  // Dynamic grid — only items that exist in the sheet
   function renderGrid() {
     const grid = $('item-grid');
-    const ids = API.getAllIds();
     grid.innerHTML = '';
-    for (let i = 1; i <= 150; i++) {
-      const div = document.createElement('div');
-      div.className = 'grid-item' + (ids.has(String(i)) ? ' has-data' : '');
-      div.textContent = i;
-      div.dataset.id = i;
-      grid.appendChild(div);
-    }
-    grid.addEventListener('click', e => {
-      const item = e.target.closest('.grid-item');
-      if (item) App.showDetail(item.dataset.id);
+    const items = API.getAllItems(lang);
+
+    items.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'grid-item';
+      card.dataset.id = item.id;
+
+      // Thumbnail
+      const firstImg = String(item.images || item.thumbnail || '').split(',')[0].trim();
+      if (firstImg) {
+        const img = document.createElement('img');
+        img.className = 'grid-thumb';
+        img.dataset.src = firstImg;
+        img.alt = item.title || 'Exhibit ' + item.id;
+        img.loading = 'lazy';
+        imgObserver.observe(img);
+        card.appendChild(img);
+      } else {
+        const ph = document.createElement('div');
+        ph.className = 'grid-thumb-placeholder';
+        ph.textContent = item.id;
+        card.appendChild(ph);
+      }
+
+      // Info
+      const info = document.createElement('div');
+      info.className = 'grid-info';
+      info.innerHTML = '<div class="grid-number">#' + item.id + '</div>' +
+        '<div class="grid-name">' + (item.title || 'Exhibit ' + item.id) + '</div>';
+      card.appendChild(info);
+
+      grid.appendChild(card);
     });
+
+    // Event delegation
+    grid.onclick = e => {
+      const card = e.target.closest('.grid-item');
+      if (card) App.showDetail(card.dataset.id);
+    };
   }
 
   function filterGrid(query) {
     const q = query.toLowerCase().trim();
-    const cells = $('item-grid').children;
-    for (const cell of cells) {
-      const id = cell.dataset.id;
+    const cards = $('item-grid').children;
+    for (const card of cards) {
+      const id = card.dataset.id;
       const item = API.getItem(id, lang);
-      const match = !q || id.includes(q) ||
-        (item && item.title.toLowerCase().includes(q));
-      cell.style.display = match ? '' : 'none';
+      const match = !q || String(id).includes(q) ||
+        (item && item.title && item.title.toLowerCase().includes(q));
+      card.style.display = match ? '' : 'none';
     }
   }
 
   function renderDetail(item) {
+    $('detail-badge').textContent = 'Exhibit #' + item.id;
     $('detail-title').textContent = item.title || 'Untitled';
     $('detail-desc').textContent = item.desc || '';
 
@@ -72,43 +99,39 @@ const UI = (() => {
     String(item.images || '').split(',').map(s => s.trim()).filter(Boolean).forEach(url => {
       const img = document.createElement('img');
       img.dataset.src = url;
-      img.alt = item.title;
+      img.alt = item.title || '';
       img.loading = 'lazy';
       imgObserver.observe(img);
       carousel.appendChild(img);
     });
 
     // Video
-    const videoWrap = $('detail-video');
+    const vw = $('detail-video');
     if (item.video) {
-      videoWrap.classList.remove('hidden');
-      videoWrap.innerHTML = `<video src="${item.video}" controls preload="none" playsinline></video>`;
+      vw.classList.remove('hidden');
+      vw.innerHTML = '<video src="' + item.video + '" controls preload="none" playsinline></video>';
     } else {
-      videoWrap.classList.add('hidden');
-      videoWrap.innerHTML = '';
+      vw.classList.add('hidden');
+      vw.innerHTML = '';
     }
 
     // Audio
-    const audioUrl = item.audio || '';
-    AudioPlayer.load(audioUrl);
-    if (audioUrl) AudioPlayer.tryResume(audioUrl);
+    AudioPlayer.load(item.audio || '');
+    if (item.audio) AudioPlayer.tryResume(item.audio);
   }
 
   async function toggleLang() {
-    // Cycle through languages: en → hi → te → mr → en
     const langs = API.LANGUAGES;
     const idx = (langs.indexOf(lang) + 1) % langs.length;
     await setLang(langs[idx]);
-
-    // Re-render detail if visible
-    const detailPage = $('page-detail');
-    if (detailPage.classList.contains('active')) {
-      const id = detailPage.dataset.currentId;
-      if (id) {
-        const item = API.getItem(id, lang);
-        if (item) renderDetail(item);
-      }
+    // Re-render if on detail page
+    const dp = $('page-detail');
+    if (dp.classList.contains('active') && dp.dataset.currentId) {
+      const item = API.getItem(dp.dataset.currentId, lang);
+      if (item) renderDetail(item);
     }
+    // Re-render grid if on explorer
+    if ($('page-explorer').classList.contains('active')) renderGrid();
   }
 
   return { getLang, setLang, updateLangButtons, renderGrid, filterGrid, renderDetail, toggleLang, showSkeleton, hideSkeleton };

@@ -3,56 +3,67 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-  <meta name="theme-color" content="#1a1a2e">
-  <meta name="description" content="Self-guided audio tour for the museum">
-  <title>Museum Audio Guide</title>
+  <meta name="theme-color" content="#0a1628">
+  <meta name="description" content="Sri Keshava Spoorthi Mandir - Self-guided audio tour, Kandakurthi">
+  <title>Sri Keshava Spoorthi Mandir | Audio Guide</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Telugu:wght@500;700&family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <!-- Landing Page -->
+  <!-- Landing / Welcome Portal -->
   <section id="page-landing" class="page active">
+    <div class="landing-bg"></div>
     <div class="landing-inner">
-      <img src="assets/logo.png" alt="Museum Logo" class="logo" onerror="this.style.display='none'">
-      <h1>Welcome to the Museum</h1>
-      <p class="subtitle">Your self-guided audio tour</p>
+      <div class="mandir-icon">🙏</div>
+      <h1 class="mandir-title">Sri Keshava Spoorthi Mandir</h1>
+      <p class="mandir-location">Kandakurthi, Renjal Mandal, Nizamabad</p>
+      <p class="mandir-tagline">Commemorating the Centenary of Rashtriya Swayamsevak Sangh</p>
+
       <form id="form-register" autocomplete="off">
         <input type="text" id="inp-name" placeholder="Your Name" required>
         <input type="tel" id="inp-phone" placeholder="Phone Number" required pattern="[0-9]{10,15}">
         <select id="sel-lang"></select>
-        <button type="submit" id="btn-start">Start Tour</button>
+        <button type="submit" id="btn-start">Enter the Mandir</button>
         <p id="reg-error" class="error hidden"></p>
       </form>
+
+      <div class="visitor-note">
+        <p>🌿 This is a plastic-free zone. Please bring your own water bottle.</p>
+      </div>
     </div>
   </section>
 
-  <!-- Item Explorer -->
+  <!-- Exhibit Explorer -->
   <section id="page-explorer" class="page">
     <header class="topbar">
-      <h2>Explore Items</h2>
+      <div>
+        <h2 class="explorer-title">Heritage of Kandakurthi</h2>
+        <p class="explorer-sub">Tap an exhibit to begin</p>
+      </div>
       <button id="btn-lang-toggle" class="lang-btn" aria-label="Switch language">EN</button>
     </header>
     <div class="search-wrap">
-      <input type="search" id="inp-search" placeholder="Search by number or name…">
+      <input type="search" id="inp-search" placeholder="🔍 Search by number or name…">
     </div>
     <div id="item-grid" class="grid"></div>
-    <div id="grid-skeleton" class="grid skeleton-grid hidden">
-      <!-- skeleton placeholders injected by JS -->
-    </div>
+    <div id="grid-skeleton" class="grid skeleton-grid hidden"></div>
     <div id="grid-error" class="error-block hidden">
-      <p>Failed to load items</p>
+      <p>Unable to load exhibits</p>
       <button id="btn-retry">Retry</button>
     </div>
   </section>
 
-  <!-- Item Detail -->
+  <!-- Exhibit Detail -->
   <section id="page-detail" class="page">
     <header class="topbar">
       <button id="btn-back" aria-label="Go back">← Back</button>
       <button id="btn-lang-toggle-detail" class="lang-btn" aria-label="Switch language">EN</button>
     </header>
     <div id="detail-content">
+      <span id="detail-badge" class="item-badge"></span>
       <h2 id="detail-title"></h2>
       <div id="detail-images" class="image-carousel"></div>
       <div id="detail-video" class="video-wrap hidden"></div>
@@ -61,6 +72,7 @@
 
     <!-- Audio Player -->
     <div id="audio-player" class="player">
+      <div class="player-label">🎧 Listen to History</div>
       <div class="player-status" id="player-status"></div>
       <div class="player-controls">
         <button id="btn-play" class="play-btn" aria-label="Play" disabled>
@@ -78,7 +90,6 @@
       </div>
     </div>
 
-    <!-- Detail skeleton -->
     <div id="detail-skeleton" class="skeleton-detail hidden">
       <div class="sk-title"></div>
       <div class="sk-image"></div>
