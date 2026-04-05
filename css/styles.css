@@ -30,7 +30,7 @@ textarea{resize:vertical;min-height:80px}
 #page-landing{justify-content:center;align-items:center;text-align:center;padding-bottom:1rem;background:linear-gradient(170deg,var(--cream) 0%,var(--cream-dark) 100%)}
 .landing-inner{width:100%;max-width:380px}
 .mandir-logo{width:160px;height:160px;object-fit:contain;margin-bottom:.8rem;border-radius:50%;box-shadow:0 4px 16px rgba(212,175,55,.2)}
-.mandir-title{font-size:1.8rem;color:var(--navy);line-height:1.3;margin-bottom:.3rem}
+.mandir-title{font-size:1.3rem;color:var(--navy);line-height:1.3;margin-bottom:.3rem;white-space:nowrap}
 .mandir-location{font-size:1rem;color:var(--text-muted);margin-bottom:.2rem}
 .mandir-tagline{font-size:.9rem;color:var(--saffron);margin-bottom:1.5rem;font-style:italic}
 #form-register{display:flex;flex-direction:column;gap:.7rem}
