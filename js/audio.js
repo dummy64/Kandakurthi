@@ -1,4 +1,3 @@
-// ===== audio.js — Custom audio player controller =====
 const AudioPlayer = (() => {
   let audio = null;
   const $ = id => document.getElementById(id);
@@ -14,7 +13,6 @@ const AudioPlayer = (() => {
     els.current = $('time-current');
     els.duration = $('time-duration');
     els.status = $('player-status');
-    els.player = $('audio-player');
 
     els.btn.addEventListener('click', toggle);
     els.seek.addEventListener('input', seek);
@@ -35,11 +33,11 @@ const AudioPlayer = (() => {
     }
 
     audio = new Audio();
-    audio.preload = 'none';
+    audio.preload = 'metadata';
     audio.src = url;
 
     els.status.textContent = 'Loading…';
-    els.btn.disabled = true;
+    els.btn.disabled = false; // Enable immediately — let user tap play
     els.progress.style.width = '0%';
     els.buffer.style.width = '0%';
     els.current.textContent = '0:00';
@@ -49,7 +47,10 @@ const AudioPlayer = (() => {
 
     audio.addEventListener('loadedmetadata', () => {
       els.duration.textContent = fmt(audio.duration);
-      els.btn.disabled = false;
+      els.status.textContent = 'Ready';
+    });
+
+    audio.addEventListener('canplay', () => {
       els.status.textContent = 'Ready';
     });
 
@@ -59,10 +60,14 @@ const AudioPlayer = (() => {
       els.progress.style.width = pct + '%';
       els.seek.value = pct;
       els.current.textContent = fmt(audio.currentTime);
+      // Update duration in case it wasn't available earlier
+      if (audio.duration && els.duration.textContent === '0:00') {
+        els.duration.textContent = fmt(audio.duration);
+      }
     });
 
     audio.addEventListener('progress', () => {
-      if (audio.buffered.length) {
+      if (audio.buffered.length && audio.duration) {
         const end = audio.buffered.end(audio.buffered.length - 1);
         els.buffer.style.width = (end / audio.duration) * 100 + '%';
       }
@@ -76,21 +81,26 @@ const AudioPlayer = (() => {
       els.btn.disabled = true;
     });
 
-    // Save resume position periodically
     audio.addEventListener('timeupdate', () => {
       if (audio.currentTime > 0) {
-        localStorage.setItem('museum_resume', JSON.stringify({
-          src: url, time: audio.currentTime
-        }));
+        localStorage.setItem('museum_resume', JSON.stringify({ src: url, time: audio.currentTime }));
       }
     });
+
+    // Trigger metadata load
+    audio.load();
   }
 
   function toggle() {
     if (!audio) return;
     if (audio.paused) {
-      audio.play().then(showPause).catch(() => {
+      els.status.textContent = 'Loading…';
+      audio.play().then(() => {
+        showPause();
+        els.status.textContent = '';
+      }).catch(() => {
         els.status.textContent = 'Tap to play';
+        showPlay();
       });
     } else {
       audio.pause();
@@ -120,13 +130,13 @@ const AudioPlayer = (() => {
       audio.load();
       audio = null;
     }
-    showPlay();
+    if (els.btn) showPlay();
   }
 
   function tryResume(url) {
     try {
       const saved = JSON.parse(localStorage.getItem('museum_resume'));
-      if (saved?.src === url && saved.time > 0) {
+      if (saved?.src === url && saved.time > 0 && audio) {
         audio.currentTime = saved.time;
       }
     } catch {}
