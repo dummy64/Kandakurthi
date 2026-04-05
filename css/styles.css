@@ -89,10 +89,7 @@ textarea{resize:vertical;min-height:80px}
 
 /* === Audio Player === */
 .player{position:fixed;bottom:0;left:0;right:0;background:var(--navy);padding:.6rem 1rem;padding-bottom:calc(.6rem + env(safe-area-inset-bottom,0px));z-index:20}
-.player-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.2rem}
-.player-label{font-size:.75rem;color:var(--gold);font-family:'Playfair Display',serif}
-.auto-next-toggle{font-size:.65rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:.3rem;cursor:pointer}
-.auto-next-toggle input{width:auto;margin:0}
+.player-label{font-size:.75rem;color:var(--gold);font-family:'Playfair Display',serif;margin-bottom:.2rem}
 .player-status{font-size:.68rem;color:rgba(255,255,255,.5);min-height:.85rem}
 .player-controls{display:flex;align-items:center;gap:.6rem}
 .play-btn{width:54px;height:54px;background:linear-gradient(135deg,var(--saffron),var(--saffron-light));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;color:#fff;box-shadow:0 3px 10px rgba(242,140,40,.35);transition:opacity var(--transition)}

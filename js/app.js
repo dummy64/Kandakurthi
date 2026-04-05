@@ -51,13 +51,6 @@ const App = (() => {
     update();
   }
 
-  // #4 Auto-next
-  function setupAutoNext() {
-    AudioPlayer.setOnEnded(() => {
-      if ($('chk-auto-next').checked) navigateItem(1);
-    });
-  }
-
   // #7 Feedback
   let feedbackRating = 0;
   function initFeedback() {
@@ -129,7 +122,6 @@ const App = (() => {
     initOffline();
     initFeedback();
     initBottomNav();
-    setupAutoNext();
 
     // Language dropdown
     const sel = $('sel-lang');
