@@ -46,9 +46,9 @@ textarea{resize:vertical;min-height:80px}
 .explorer-sub{font-size:.7rem;color:var(--text-muted);margin-top:.15rem;font-family:'Inter',sans-serif}
 .welcome-msg{font-size:.8rem;color:var(--saffron);font-weight:500;margin-bottom:.1rem}
 .lang-btn{background:#fff;color:var(--gold);padding:.35rem .75rem;border-radius:var(--radius-sm);font-size:.8rem;font-weight:600;border:1.5px solid var(--gold)}
-#btn-back,.btn-nav-back{background:#fff;color:var(--navy);padding:.4rem .9rem;border-radius:var(--radius-sm);font-size:.85rem;border:1.5px solid var(--cream-dark);box-shadow:var(--card-shadow)}
-.detail-nav{display:flex;gap:.3rem}
-.nav-btn{width:34px;height:34px;background:#fff;border:1.5px solid var(--cream-dark);border-radius:50%;font-size:1.2rem;color:var(--navy);display:flex;align-items:center;justify-content:center;box-shadow:var(--card-shadow)}
+#btn-back,.btn-nav-back{background:#fff;color:var(--navy);padding:.55rem 1.1rem;border-radius:var(--radius-sm);font-size:1rem;border:1.5px solid var(--cream-dark);box-shadow:var(--card-shadow)}
+.detail-nav{display:flex;gap:.4rem}
+.nav-btn{width:42px;height:42px;background:#fff;border:1.5px solid var(--cream-dark);border-radius:50%;font-size:1.5rem;color:var(--navy);display:flex;align-items:center;justify-content:center;box-shadow:var(--card-shadow)}
 .nav-btn:disabled{opacity:.3}
 .detail-actions{display:flex;gap:.4rem;align-items:center}
 .action-btn{width:34px;height:34px;background:#fff;border:1.5px solid var(--gold);border-radius:50%;font-size:1rem;color:var(--gold);display:flex;align-items:center;justify-content:center;box-shadow:var(--card-shadow)}
