@@ -42,11 +42,23 @@ const UI = (() => {
     await API.fetchItems(l);
   }
 
+  const LANG_LABELS = { en: 'English', te: 'తెలుగు', hi: 'हिन्दी' };
+
+  function populateLangSelect(sel) {
+    if (!sel || sel.options.length) { if (sel) sel.value = lang; return; }
+    API.LANGUAGES.forEach(l => {
+      const opt = document.createElement('option');
+      opt.value = l;
+      opt.textContent = LANG_LABELS[l] || l.toUpperCase();
+      sel.appendChild(opt);
+    });
+    sel.value = lang;
+  }
+
   function updateLangButtons() {
-    const label = lang.toUpperCase();
     const b1 = $('btn-lang-toggle'), b2 = $('btn-lang-toggle-detail');
-    if (b1) b1.textContent = label;
-    if (b2) b2.textContent = label;
+    populateLangSelect(b1);
+    populateLangSelect(b2);
   }
 
   function showSkeleton(id) { $(id).classList.remove('hidden'); }
@@ -136,10 +148,9 @@ const UI = (() => {
     markVisited(item.id);
   }
 
-  async function toggleLang() {
-    const langs = API.LANGUAGES;
-    const idx = (langs.indexOf(lang) + 1) % langs.length;
-    await setLang(langs[idx]);
+  async function toggleLang(newLang) {
+    if (!newLang || newLang === lang) return;
+    await setLang(newLang);
     const dp = $('page-detail');
     if (dp.classList.contains('active') && dp.dataset.currentId) {
       const item = API.getItem(dp.dataset.currentId, lang);

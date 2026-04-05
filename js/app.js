@@ -17,7 +17,7 @@ const App = (() => {
 
   function showWelcome() {
     const name = localStorage.getItem('museum_user_name');
-    if (name) $('welcome-msg').textContent = 'Welcome, ' + name + ' 🙏';
+    if (name) $('welcome-msg').textContent = I18n.t('welcome', UI.getLang()) + name + ' 🙏';
   }
 
   function updateExhibitCount() {
@@ -171,8 +171,8 @@ const App = (() => {
 
     $('inp-search').addEventListener('input', e => UI.filterGrid(e.target.value));
     $('btn-back').addEventListener('click', () => { history.pushState(null, '', location.pathname); navigate('explorer'); });
-    $('btn-lang-toggle').addEventListener('click', UI.toggleLang);
-    $('btn-lang-toggle-detail').addEventListener('click', UI.toggleLang);
+    $('btn-lang-toggle').addEventListener('change', e => { UI.toggleLang(e.target.value); showWelcome(); updateExhibitCount(); });
+    $('btn-lang-toggle-detail').addEventListener('change', e => UI.toggleLang(e.target.value));
     $('btn-retry').addEventListener('click', loadExplorer);
     $('btn-prev').addEventListener('click', () => navigateItem(-1));
     $('btn-next').addEventListener('click', () => navigateItem(1));

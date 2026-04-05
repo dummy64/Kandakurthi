@@ -10,6 +10,7 @@ const I18n = (() => {
       btnStart: 'Enter the Mandir',
       visitorNote: '🌿 This is a plastic-free zone. Please bring your own water bottle.',
       regErrorPhone: 'Enter a valid phone number (10-15 digits)',
+      welcome: 'Welcome, ',
       // Explorer
       explorerTitle: 'Heritage of Kandakurthi',
       exhibitsToExplore: ' exhibits to explore',
@@ -76,6 +77,7 @@ const I18n = (() => {
       btnStart: 'మందిర్‌లోకి ప్రవేశించండి',
       visitorNote: '🌿 ఇది ప్లాస్టిక్ రహిత ప్రాంతం. దయచేసి మీ సొంత నీటి బాటిల్ తీసుకురండి.',
       regErrorPhone: 'సరైన ఫోన్ నంబర్ నమోదు చేయండి (10-15 అంకెలు)',
+      welcome: 'స్వాగతం, ',
       explorerTitle: 'కందకుర్తి వారసత్వం',
       exhibitsToExplore: ' ప్రదర్శనలు అన్వేషించండి',
       searchPlaceholder: '🔍 నంబర్ లేదా పేరు ద్వారా శోధించండి…',
@@ -135,6 +137,7 @@ const I18n = (() => {
       btnStart: 'मंदिर में प्रवेश करें',
       visitorNote: '🌿 यह प्लास्टिक मुक्त क्षेत्र है। कृपया अपनी पानी की बोतल लाएँ।',
       regErrorPhone: 'सही फ़ोन नंबर दर्ज करें (10-15 अंक)',
+      welcome: 'स्वागत है, ',
       explorerTitle: 'कंदकुर्ती की विरासत',
       exhibitsToExplore: ' प्रदर्शनियाँ देखें',
       searchPlaceholder: '🔍 नंबर या नाम से खोजें…',
