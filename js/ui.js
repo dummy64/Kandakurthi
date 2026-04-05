@@ -67,6 +67,11 @@ const UI = (() => {
         img.loading = 'lazy';
         imgObserver.observe(img);
         card.appendChild(img);
+      } else {
+        const ph = document.createElement('div');
+        ph.className = 'grid-thumb-placeholder';
+        ph.textContent = item.id;
+        card.appendChild(ph);
       }
 
       const info = document.createElement('div');
