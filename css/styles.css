@@ -111,7 +111,7 @@ textarea{resize:vertical;min-height:80px}
 /* === Bottom Nav === */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--navy);display:flex;justify-content:space-around;padding:.6rem 0;padding-bottom:calc(.6rem + env(safe-area-inset-bottom,0px));z-index:15;border-top:1px solid rgba(255,255,255,.08)}
 .bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;font-size:.8rem;color:rgba(255,255,255,.5);padding:.4rem 0;gap:.15rem;transition:color var(--transition)}
-.bnav-item.active{color:var(--gold)}
+.bnav-item.active{color:var(--gold);display:none}
 
 /* === About Page === */
 .about-content{flex:1;overflow-y:auto}
