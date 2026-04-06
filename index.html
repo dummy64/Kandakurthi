@@ -16,8 +16,8 @@
   <!-- Offline Banner -->
   <div id="offline-banner" class="offline-banner hidden" data-i18n="offlineBanner">📡 You're offline — cached content available</div>
 
-  <!-- Landing / Welcome Portal -->
-  <section id="page-landing" class="page active">
+  <!-- Landing / Login (only for exhibit access) -->
+  <section id="page-landing" class="page">
     <div class="landing-inner">
       <img src="assets/logo.png" alt="Sri Keshava Spoorthi Mandir" class="mandir-logo">
       <h1 class="mandir-title" data-i18n="mandirTitle">Sri Keshava Spoorthi Mandir</h1>
@@ -34,6 +34,27 @@
         <p data-i18n="visitorNote">🌿 This is a plastic-free zone. Please bring your own water bottle.</p>
       </div>
     </div>
+  </section>
+
+  <!-- Home Page -->
+  <section id="page-home" class="page active">
+    <div class="home-inner">
+      <img src="assets/logo.png" alt="Sri Keshava Spoorthi Mandir" class="mandir-logo">
+      <h1 class="mandir-title" data-i18n="mandirTitle">Sri Keshava Spoorthi Mandir</h1>
+      <p class="mandir-location" data-i18n="mandirLocation">Kandakurthi, Renjal Mandal, Nizamabad</p>
+      <p class="mandir-tagline" data-i18n="mandirTagline">Commemorating the Centenary of Rashtriya Swayamsevak Sangh</p>
+      <button id="btn-explore" class="btn-primary home-explore-btn" data-i18n="navExhibits">🏛 Exhibits</button>
+      <div class="visitor-note">
+        <p data-i18n="visitorNote">🌿 This is a plastic-free zone. Please bring your own water bottle.</p>
+      </div>
+    </div>
+    <nav class="bottom-nav">
+      <button class="bnav-item active" data-page="home" data-i18n="navHome">🏠 Home</button>
+      <button class="bnav-item" data-page="explorer" data-i18n="navExhibits">🏛 Exhibits</button>
+      <button class="bnav-item" data-page="about" data-i18n="navAbout">📜 About</button>
+      <button class="bnav-item" data-page="map" data-i18n="navMap">🗺 Map</button>
+      <button class="bnav-item" data-page="feedback" data-i18n="navFeedback">💬 Feedback</button>
+    </nav>
   </section>
 
   <!-- Exhibit Explorer -->
@@ -65,6 +86,7 @@
 
     <!-- Bottom Nav -->
     <nav class="bottom-nav">
+      <button class="bnav-item" data-page="home" data-i18n="navHome">🏠 Home</button>
       <button class="bnav-item active" data-page="explorer" data-i18n="navExhibits">🏛 Exhibits</button>
       <button class="bnav-item" data-page="about" data-i18n="navAbout">📜 About</button>
       <button class="bnav-item" data-page="map" data-i18n="navMap">🗺 Map</button>
@@ -150,6 +172,7 @@
       </div>
     </div>
     <nav class="bottom-nav">
+      <button class="bnav-item" data-page="home" data-i18n="navHome">🏠 Home</button>
       <button class="bnav-item" data-page="explorer" data-i18n="navExhibits">🏛 Exhibits</button>
       <button class="bnav-item active" data-page="about" data-i18n="navAbout">📜 About</button>
       <button class="bnav-item" data-page="map" data-i18n="navMap">🗺 Map</button>
@@ -171,6 +194,7 @@
       <p class="map-hint" data-i18n="mapHint">Pinch to zoom • Drag to pan</p>
     </div>
     <nav class="bottom-nav">
+      <button class="bnav-item" data-page="home" data-i18n="navHome">🏠 Home</button>
       <button class="bnav-item" data-page="explorer" data-i18n="navExhibits">🏛 Exhibits</button>
       <button class="bnav-item" data-page="about" data-i18n="navAbout">📜 About</button>
       <button class="bnav-item active" data-page="map" data-i18n="navMap">🗺 Map</button>
@@ -201,6 +225,7 @@
       </form>
     </div>
     <nav class="bottom-nav">
+      <button class="bnav-item" data-page="home" data-i18n="navHome">🏠 Home</button>
       <button class="bnav-item" data-page="explorer" data-i18n="navExhibits">🏛 Exhibits</button>
       <button class="bnav-item" data-page="about" data-i18n="navAbout">📜 About</button>
       <button class="bnav-item" data-page="map" data-i18n="navMap">🗺 Map</button>

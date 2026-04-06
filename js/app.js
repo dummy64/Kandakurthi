@@ -1,7 +1,7 @@
 const App = (() => {
   const $ = id => document.getElementById(id);
   const pages = {
-    landing: $('page-landing'), explorer: $('page-explorer'),
+    landing: $('page-landing'), home: $('page-home'), explorer: $('page-explorer'),
     detail: $('page-detail'), about: $('page-about'),
     map: $('page-map'), feedback: $('page-feedback')
   };
@@ -10,7 +10,6 @@ const App = (() => {
     Object.values(pages).forEach(p => p.classList.remove('active'));
     pages[page].classList.add('active');
     window.scrollTo(0, 0);
-    // Hide audio player on non-detail pages
     $('audio-player').style.display = page === 'detail' ? '' : 'none';
     if (page !== 'detail') AudioPlayer.destroy();
   }
@@ -25,34 +24,37 @@ const App = (() => {
     $('exhibit-count').textContent = API.getAllItems(lang).length + I18n.t('exhibitsToExplore', lang);
   }
 
-  // #1 Share
+  function isRegistered() { return !!localStorage.getItem('museum_registered'); }
+
+  // Gate: if not registered, show login; otherwise load explorer
+  function gotoExhibits() {
+    if (isRegistered()) {
+      loadExplorer();
+    } else {
+      navigate('landing');
+    }
+  }
+
   function shareItem(id) {
     const item = API.getItem(id, UI.getLang());
     const title = item?.title || 'Exhibit #' + id;
     const url = location.origin + location.pathname + '?id=' + id;
     const text = title + ' — Sri Keshava Spoorthi Mandir Audio Guide';
-
     if (navigator.share) {
       navigator.share({ title, text, url }).catch(() => {});
     } else {
-      // WhatsApp fallback
       window.open('https://wa.me/?text=' + encodeURIComponent(text + '\n' + url), '_blank');
     }
   }
 
-  // #3 Offline indicator
   function initOffline() {
     const banner = $('offline-banner');
-    const update = () => {
-      if (navigator.onLine) banner.classList.add('hidden');
-      else banner.classList.remove('hidden');
-    };
+    const update = () => banner.classList.toggle('hidden', navigator.onLine);
     window.addEventListener('online', update);
     window.addEventListener('offline', update);
     update();
   }
 
-  // #7 Feedback
   let feedbackRating = 0;
   function initFeedback() {
     $('rating-row').addEventListener('click', e => {
@@ -67,14 +69,12 @@ const App = (() => {
     $('form-feedback').addEventListener('submit', async e => {
       e.preventDefault();
       const status = $('fb-status');
-
       if (!feedbackRating) {
         status.textContent = I18n.t('fbSelectRating', UI.getLang());
         status.className = 'fb-status error';
         status.classList.remove('hidden');
         return;
       }
-
       $('btn-feedback').disabled = true;
       $('btn-feedback').textContent = I18n.t('fbSubmitting', UI.getLang());
       try {
@@ -94,25 +94,25 @@ const App = (() => {
     });
   }
 
-  // Bottom nav
   function initBottomNav() {
     document.querySelectorAll('.bnav-item').forEach(btn => {
       btn.addEventListener('click', () => {
         const page = btn.dataset.page;
-        navigate(page);
-        if (page === 'explorer') UI.updateVisitProgress();
-        // Update active state across all bottom navs
+        // Exhibits require login
+        if (page === 'explorer') { gotoExhibits(); }
+        else { navigate(page); }
+        if (page === 'explorer' && isRegistered()) UI.updateVisitProgress();
         document.querySelectorAll('.bnav-item').forEach(b => {
           b.classList.toggle('active', b.dataset.page === page);
         });
       });
     });
+    // Back buttons on about/map/feedback go to home
     document.querySelectorAll('.btn-nav-back').forEach(btn => {
       btn.addEventListener('click', () => {
-        navigate('explorer');
-        UI.updateVisitProgress();
+        navigate('home');
         document.querySelectorAll('.bnav-item').forEach(b => {
-          b.classList.toggle('active', b.dataset.page === 'explorer');
+          b.classList.toggle('active', b.dataset.page === 'home');
         });
       });
     });
@@ -125,26 +125,22 @@ const App = (() => {
     initFeedback();
     initBottomNav();
 
-    // Language dropdown
+    // Language dropdown on login page
     const sel = $('sel-lang');
     sel.innerHTML = '';
-    const labels = { en: 'English', te: 'తెలుగు', hi: 'हिन्दी', mr: 'मराठी' };
+    const labels = { en: 'English', te: 'తెలుగు', hi: 'हिन्दी' };
     API.LANGUAGES.forEach(l => {
       const opt = document.createElement('option');
       opt.value = l;
       opt.textContent = labels[l] || l.toUpperCase();
       sel.appendChild(opt);
     });
-
     sel.value = UI.getLang();
-
-    // Live preview: translate landing page when dropdown changes
     sel.addEventListener('change', () => I18n.applyAll(sel.value));
 
-    // Apply translations for current language
     I18n.applyAll(UI.getLang());
 
-    // Registration
+    // Registration → always go to explorer
     $('form-register').addEventListener('submit', async e => {
       e.preventDefault();
       const name = $('inp-name').value.trim();
@@ -171,6 +167,9 @@ const App = (() => {
       await loadExplorer();
     });
 
+    // Home page "Explore" button
+    $('btn-explore').addEventListener('click', gotoExhibits);
+
     $('inp-search').addEventListener('input', e => UI.filterGrid(e.target.value));
     $('btn-back').addEventListener('click', () => { history.pushState(null, '', location.pathname); navigate('explorer'); UI.updateVisitProgress(); });
     $('btn-lang-toggle').addEventListener('change', e => { UI.toggleLang(e.target.value); showWelcome(); updateExhibitCount(); });
@@ -182,12 +181,11 @@ const App = (() => {
 
     // Deep link / QR
     const deepId = new URLSearchParams(location.search).get('id');
-    if (localStorage.getItem('museum_registered')) {
-      await loadExplorer();
-      if (deepId) showDetail(deepId);
+    if (deepId) {
+      if (isRegistered()) { await loadExplorer(); showDetail(deepId); }
+      else { localStorage.setItem('museum_pending_id', deepId); navigate('landing'); }
     } else {
-      if (deepId) localStorage.setItem('museum_pending_id', deepId);
-      navigate('landing');
+      navigate('home');
     }
 
     window.addEventListener('popstate', () => {
