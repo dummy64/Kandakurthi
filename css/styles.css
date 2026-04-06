@@ -30,6 +30,7 @@ textarea{resize:vertical;min-height:80px}
 /* === Landing === */
 #page-landing{justify-content:center;align-items:center;text-align:center;padding-bottom:1rem;background:linear-gradient(170deg,var(--cream) 0%,var(--cream-dark) 100%)}
 .landing-inner{width:100%;max-width:380px}
+.landing-back{align-self:flex-start;margin-bottom:.5rem}
 
 /* === Home Page === */
 #page-home{justify-content:center;align-items:center;text-align:center;background:linear-gradient(170deg,var(--cream) 0%,var(--cream-dark) 100%)}

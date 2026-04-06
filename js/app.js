@@ -169,6 +169,7 @@ const App = (() => {
 
     // Home page "Explore" button
     $('btn-explore').addEventListener('click', gotoExhibits);
+    $('btn-landing-back').addEventListener('click', () => navigate('home'));
 
     $('inp-search').addEventListener('input', e => UI.filterGrid(e.target.value));
     $('btn-back').addEventListener('click', () => { history.pushState(null, '', location.pathname); navigate('explorer'); UI.updateVisitProgress(); });
