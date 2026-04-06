@@ -212,7 +212,6 @@
       <span></span>
     </header>
     <div class="feedback-content">
-      <p class="feedback-intro" data-i18n="feedbackIntro">We'd love to hear about your experience at the Mandir.</p>
       <form id="form-feedback" autocomplete="off">
         <label class="fb-label" data-i18n="feedbackLabel">How was your visit?</label>
         <div class="rating-row" id="rating-row">
@@ -222,6 +221,7 @@
           <button type="button" class="rating-btn" data-val="4">😊</button>
           <button type="button" class="rating-btn" data-val="5">🤩</button>
         </div>
+        <textarea id="inp-feedback" data-i18n="feedbackPlaceholder" placeholder="Your comments (optional)" rows="3"></textarea>
         <button type="submit" id="btn-feedback" class="btn-primary" data-i18n="btnSubmitFeedback">Submit Feedback</button>
         <p id="fb-status" class="fb-status hidden"></p>
       </form>

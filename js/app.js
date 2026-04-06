@@ -78,7 +78,7 @@ const App = (() => {
       $('btn-feedback').disabled = true;
       $('btn-feedback').textContent = I18n.t('fbSubmitting', UI.getLang());
       try {
-        await API.submitFeedback(feedbackRating, '');
+        await API.submitFeedback(feedbackRating, document.getElementById('inp-feedback').value.trim());
         status.textContent = I18n.t('fbThanks', UI.getLang());
         status.className = 'fb-status success';
         $('form-feedback').reset();
