@@ -174,6 +174,7 @@ const App = (() => {
     $('btn-back').addEventListener('click', () => { history.pushState(null, '', location.pathname); navigate('explorer'); UI.updateVisitProgress(); });
     $('btn-lang-toggle').addEventListener('change', e => { UI.toggleLang(e.target.value); showWelcome(); updateExhibitCount(); });
     $('btn-lang-toggle-detail').addEventListener('change', e => UI.toggleLang(e.target.value));
+    $('btn-lang-toggle-home').addEventListener('change', e => UI.toggleLang(e.target.value));
     $('btn-retry').addEventListener('click', loadExplorer);
     $('btn-prev').addEventListener('click', () => navigateItem(-1));
     $('btn-next').addEventListener('click', () => navigateItem(1));

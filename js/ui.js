@@ -58,9 +58,10 @@ const UI = (() => {
   }
 
   function updateLangButtons() {
-    const b1 = $('btn-lang-toggle'), b2 = $('btn-lang-toggle-detail');
+    const b1 = $('btn-lang-toggle'), b2 = $('btn-lang-toggle-detail'), b3 = $('btn-lang-toggle-home');
     populateLangSelect(b1);
     populateLangSelect(b2);
+    populateLangSelect(b3);
   }
 
   function showSkeleton(id) { $(id).classList.remove('hidden'); }
