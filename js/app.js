@@ -62,7 +62,7 @@ const App = (() => {
       if (!btn) return;
       feedbackRating = parseInt(btn.dataset.val);
       for (const b of $('rating-row').children) {
-        b.classList.toggle('selected', parseInt(b.dataset.val) <= feedbackRating);
+        b.classList.toggle('selected', parseInt(b.dataset.val) === feedbackRating);
       }
     });
 
